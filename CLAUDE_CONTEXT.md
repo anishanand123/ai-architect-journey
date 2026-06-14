@@ -38,3 +38,15 @@ P10 - Capstone: agentic CRM assistant
 
 ## Repo
 https://github.com/anishanand123/ai-architect-journey
+## Current status
+- Active project: P1
+- Current task: P1 Day 1 complete (and ahead of schedule) — agent 
+  "TaskFlow Support Agent" created via Agentforce Builder's AI 
+  assistant, auto-generated subagent structure (Agent Router, 
+  Escalation, Off Topic, Features Q&A, Pricing and Plans, Account 
+  Help, Fallback-Unknown). Agent's User Record defaulted to 
+  EinsteinServiceAgent User. Description field filled in. Saved.
+- Last thing completed: P1 Day 1
+- Blocker or question: Need to review what each subagent actually 
+  does/contains (Day 2-3), and connect real Knowledge Articles to 
+  replace the placeholder @knowledge.taskflow_kb reference.
