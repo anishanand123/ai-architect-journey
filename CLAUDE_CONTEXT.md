@@ -25,10 +25,14 @@ P9  - AI governance and guardrails layer
 P10 - Capstone: agentic CRM assistant
 
 ## Current status
+## Current status
 - Active project: P1
-- Current task: Initial setup — completing environment checklist
-- Last thing completed: Created GitHub repo and cloned locally
-- Blocker or question: None
+- Current task: P1 Day 2 in progress — Knowledge setup, created 
+  FAQ record type, created Article Body rich text field
+- Last thing completed: P1 Day 1 — TaskFlow Support Agent created 
+  in Agentforce Builder with auto-generated subagents
+- Blocker or question: Article Body field still greyed out on page 
+  layout after creating FAQ record type — investigating
 
 ## Decisions made so far
 - Project-first is our permanent approach
