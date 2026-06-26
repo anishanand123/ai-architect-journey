@@ -26,13 +26,16 @@ P10 - Capstone: agentic CRM assistant
 
 ## Current status
 ## Current status
-- Active project: P1
-- Current task: P1 Day 2 in progress — Knowledge setup, created 
-  FAQ record type, created Article Body rich text field
-- Last thing completed: P1 Day 1 — TaskFlow Support Agent created 
-  in Agentforce Builder with auto-generated subagents
-- Blocker or question: Article Body field still greyed out on page 
-  layout after creating FAQ record type — investigating
+- Active project: P1 complete
+- Current task: Ready for P2
+- Last thing completed: P1 — Agentforce FAQ bot architecture 
+  complete. Multi-agent system designed (Router, 3 specialist 
+  subagents, escalation, off-topic, fallback handlers). Knowledge 
+  Articles created and categorised. Discovered Data Cloud licensing 
+  requirement for Knowledge Space Search Index — documented as 
+  architectural constraint. Agent demonstrates core multi-agent 
+  orchestration patterns and retrieval-layer thinking.
+- Blocker or question: None — P1 learning objectives met
 
 ## Decisions made so far
 - Project-first is our permanent approach
