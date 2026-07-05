@@ -101,6 +101,11 @@ Be friendly and professional. If you don't know the answer, say so."""
     assistant_message = response.text
     
     # Step 4: Store in history
+    # Step 4: Add citation metadata
+    if relevant_article:
+        assistant_message += f"\n\n[Source: {relevant_article['title']}]"
+    
+    # Step 5: Store in history
     conversation_history.append({
         "user": user_message,
         "assistant": assistant_message
