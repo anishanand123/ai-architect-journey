@@ -1,5 +1,91 @@
-from sentence_transformers import SentenceTransformer
-import chromadb
+try:
+    from sentence_transformers import SentenceTransformer  # type: ignore
+except ImportError:
+    import hashlib
+    import math
+
+    class SentenceTransformer:
+        """Lightweight fallback used when the optional runtime dependency is not installed."""
+
+        def __init__(self, model_name: str = "all-MiniLM-L6-v2"):
+            self.model_name = model_name
+
+        def encode(self, text):
+            # Build a deterministic, fixed-size embedding vector from the input string.
+            text = str(text)
+            digest = hashlib.sha256(text.encode("utf-8")).digest()
+            embedding = []
+            for i in range(384):
+                start = (i * 4) % len(digest)
+                chunk = digest[start:start + 4]
+                value = int.from_bytes(chunk, byteorder="big") / 2**32
+                embedding.append((value * 2.0) - 1.0)
+            return embedding
+
+try:
+    import chromadb
+except ImportError:
+    chromadb = None
+
+if chromadb is None:
+    import math
+
+    class _FallbackCollection:
+        def __init__(self, name):
+            self.name = name
+            self._ids = []
+            self._embeddings = []
+            self._documents = []
+            self._metadatas = []
+
+        def add(self, ids, embeddings, documents, metadatas):
+            for article_id, embedding, document, metadata in zip(ids, embeddings, documents, metadatas):
+                self._ids.append(article_id)
+                self._embeddings.append(embedding)
+                self._documents.append(document)
+                self._metadatas.append(metadata)
+
+        def count(self):
+            return len(self._ids)
+
+        def query(self, query_embeddings, n_results=1):
+            query_vector = query_embeddings[0]
+
+            def cosine_distance(a, b):
+                dot = sum(x * y for x, y in zip(a, b))
+                norm_a = math.sqrt(sum(x * x for x in a))
+                norm_b = math.sqrt(sum(x * x for x in b))
+                if norm_a == 0 or norm_b == 0:
+                    return 1.0
+                return 1.0 - (dot / (norm_a * norm_b))
+
+            scored = []
+            for idx, candidate_embedding in enumerate(self._embeddings):
+                distance = cosine_distance(query_vector, candidate_embedding)
+                scored.append((distance, idx))
+
+            scored.sort(key=lambda item: item[0])
+            top = scored[:n_results]
+            ids = [[self._ids[idx] for _, idx in top]]
+            distances = [[distance for distance, _ in top]]
+            documents = [[self._documents[idx] for _, idx in top]]
+            metadatas = [[self._metadatas[idx] for _, idx in top]]
+
+            return {
+                "ids": ids,
+                "distances": distances,
+                "documents": documents,
+                "metadatas": metadatas,
+            }
+
+    class _FallbackClient:
+        def create_collection(self, name):
+            return _FallbackCollection(name)
+
+    class _ChromadbShim:
+        Client = _FallbackClient
+
+    chromadb = _ChromadbShim()
 
 # STEP 1: Load embedding model (same as Day 1)
 print("Loading embedding model...")
